@@ -9,6 +9,7 @@ Project mission: To program a 2D sandbox game similar to, but with many more
 
 **/
 
+import io.github.pixee.security.ObjectInputFilters;
 import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.*;
@@ -5819,6 +5820,7 @@ public class TerrariaClone extends JApplet implements ChangeListener, KeyListene
         try {
             FileInputStream fileIn = new FileInputStream("worlds/" + worldFile);
             ObjectInputStream in = new ObjectInputStream(fileIn);
+            ObjectInputFilters.enableObjectFilterIfUnprotected(in);
             WorldContainer wc = (WorldContainer) in.readObject();
             in.close();
             fileIn.close();
