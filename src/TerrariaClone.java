@@ -17,6 +17,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.*;
 import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
 import java.text.*;
 import java.util.*;
 import java.util.Arrays.*;
@@ -6494,7 +6495,7 @@ public class TerrariaClone extends JApplet implements ChangeListener, KeyListene
             sb.append("\n        at " + ste.toString());
         }
         try {
-            log = new BufferedWriter(new FileWriter("log.txt"));
+            log = Files.newBufferedWriter("log.txt".toPath());
             log.write(sb.toString());
             log.close();
         }
