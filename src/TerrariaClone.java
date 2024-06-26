@@ -6484,6 +6484,11 @@ public class TerrariaClone extends JApplet implements ChangeListener, KeyListene
         }
     }
 */
+    /**
+     * Logs the details of the given exception to a file and prints it to the console.
+     *
+     * @param e the exception to be logged
+     */
     public static void postError(Exception e) {
         StringBuilder sb = new StringBuilder();
         sb.append("Exception in thread " + e.getClass().getName());
