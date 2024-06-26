@@ -9,6 +9,7 @@ Project mission: To program a 2D sandbox game similar to, but with many more
 
 **/
 
+import io.github.pixee.security.ObjectInputFilters;
 import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.*;
@@ -18,6 +19,7 @@ import java.awt.image.*;
 import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
+import java.security.SecureRandom;
 import java.text.*;
 import java.util.*;
 import java.util.Arrays.*;
@@ -568,7 +570,7 @@ public class TerrariaClone extends JApplet implements ChangeListener, KeyListene
     static int CHUNKSIZE = CHUNKBLOCKS*BLOCKSIZE;
     static int PLAYERSIZEX = 20;
     static int PLAYERSIZEY = 46;
-    static int seed = new Random().nextInt();
+    static int seed = new SecureRandom().nextInt();
 
     static Random random = new Random(seed); // SEED
 
@@ -2673,24 +2675,60 @@ public class TerrariaClone extends JApplet implements ChangeListener, KeyListene
                     if (random.nextInt(22500) == 0) {
                         t = 0;
                         switch (blocks[l][y][x]) {
-                        case 48: if (timeOfDay >= 75913 || timeOfDay < 28883) t = 49; break;
-                        case 49: if (timeOfDay >= 75913 || timeOfDay < 28883) t = 50; break;
-                        case 51: if (timeOfDay >= 32302 && timeOfDay < 72093) t = 52; break;
-                        case 52: if (timeOfDay >= 32302 && timeOfDay < 72093) t = 53; break;
-                        case 54: if (checkBiome(x, y).equals("desert")) t = 55; break;
-                        case 55: if (checkBiome(x, y).equals("desert")) t = 56; break;
-                        case 57: if (checkBiome(x, y).equals("jungle")) t = 58; break;
-                        case 58: if (checkBiome(x, y).equals("jungle")) t = 59; break;
-                        case 60: if (checkBiome(x, y).equals("frost")) t = 61; break;
-                        case 61: if (checkBiome(x, y).equals("frost")) t = 62; break;
-                        case 63: if (checkBiome(x, y).equals("cavern") || y >= 0/*stonelayer[x]*/) t = 64; break;
-                        case 64: if (checkBiome(x, y).equals("cavern") || y >= 0/*stonelayer[x]*/) t = 65; break;
-                        case 66: if (y <= HEIGHT*0.08 && random.nextInt(3) == 0 || y <= HEIGHT*0.04) t = 67; break;
-                        case 67: if (y <= HEIGHT*0.08 && random.nextInt(3) == 0 || y <= HEIGHT*0.04) t = 68; break;
-                        case 69: if (y >= HEIGHT*0.98) t = 70; break;
-                        case 70: if (y >= HEIGHT*0.98) t = 71; break;
-                        case 77: if (checkBiome(x, y).equals("swamp")) t = 78; break;
-                        case 78: if (checkBiome(x, y).equals("swamp")) t = 79; break;
+                        case 48: if (timeOfDay >= 75913 || timeOfDay < 28883) {
+                            t = 49;
+                        } break;
+                        case 49: if (timeOfDay >= 75913 || timeOfDay < 28883) {
+                            t = 50;
+                        } break;
+                        case 51: if (timeOfDay >= 32302 && timeOfDay < 72093) {
+                            t = 52;
+                        } break;
+                        case 52: if (timeOfDay >= 32302 && timeOfDay < 72093) {
+                            t = 53;
+                        } break;
+                        case 54: if (checkBiome(x, y).equals("desert")) {
+                            t = 55;
+                        } break;
+                        case 55: if (checkBiome(x, y).equals("desert")) {
+                            t = 56;
+                        } break;
+                        case 57: if (checkBiome(x, y).equals("jungle")) {
+                            t = 58;
+                        } break;
+                        case 58: if (checkBiome(x, y).equals("jungle")) {
+                            t = 59;
+                        } break;
+                        case 60: if (checkBiome(x, y).equals("frost")) {
+                            t = 61;
+                        } break;
+                        case 61: if (checkBiome(x, y).equals("frost")) {
+                            t = 62;
+                        } break;
+                        case 63: if (checkBiome(x, y).equals("cavern") || y >= 0/*stonelayer[x]*/) {
+                            t = 64;
+                        } break;
+                        case 64: if (checkBiome(x, y).equals("cavern") || y >= 0/*stonelayer[x]*/) {
+                            t = 65;
+                        } break;
+                        case 66: if (y <= HEIGHT*0.08 && random.nextInt(3) == 0 || y <= HEIGHT*0.04) {
+                            t = 67;
+                        } break;
+                        case 67: if (y <= HEIGHT*0.08 && random.nextInt(3) == 0 || y <= HEIGHT*0.04) {
+                            t = 68;
+                        } break;
+                        case 69: if (y >= HEIGHT*0.98) {
+                            t = 70;
+                        } break;
+                        case 70: if (y >= HEIGHT*0.98) {
+                            t = 71;
+                        } break;
+                        case 77: if (checkBiome(x, y).equals("swamp")) {
+                            t = 78;
+                        } break;
+                        case 78: if (checkBiome(x, y).equals("swamp")) {
+                            t = 79;
+                        } break;
                         default: break;
                         }
                         if (t != 0) {
@@ -5820,6 +5858,7 @@ public class TerrariaClone extends JApplet implements ChangeListener, KeyListene
         try {
             FileInputStream fileIn = new FileInputStream("worlds/" + worldFile);
             ObjectInputStream in = new ObjectInputStream(fileIn);
+            ObjectInputFilters.enableObjectFilterIfUnprotected(in);
             WorldContainer wc = (WorldContainer) in.readObject();
             in.close();
             fileIn.close();
@@ -6484,6 +6523,11 @@ public class TerrariaClone extends JApplet implements ChangeListener, KeyListene
         }
     }
 */
+    /**
+     * Logs the details of the given exception to a file and prints it to the console.
+     *
+     * @param e the exception to be logged
+     */
     public static void postError(Exception e) {
         StringBuilder sb = new StringBuilder();
         sb.append("Exception in thread " + e.getClass().getName());
